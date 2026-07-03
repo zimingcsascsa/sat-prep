@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAT Practice — Digital SAT Prep</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- SIDEBAR NAV -->
+  <nav id="sidebar" class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">📚</div>
+      <span class="brand-text">SAT Practice</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#" data-page="dashboard" class="active"><span class="nav-icon">🏠</span><span>Dashboard</span></a></li>
+      <li><a href="#" data-page="tests"><span class="nav-icon">📝</span><span>Practice Tests</span></a></li>
+      <li><a href="#" data-page="results"><span class="nav-icon">📊</span><span>Results</span></a></li>
+      <li><a href="#" data-page="analytics"><span class="nav-icon">📈</span><span>Score Prediction</span></a></li>
+      <li><a href="#" data-page="recommendations"><span class="nav-icon">🎯</span><span>Study Plan</span></a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <button id="theme-toggle" class="theme-btn" aria-label="Toggle dark mode">
+        <span class="theme-icon">🌙</span>
+      </button>
+      <div class="version">v1.0</div>
+    </div>
+  </nav>
+
+  <!-- MOBILE HEADER -->
+  <header class="mobile-header">
+    <button id="menu-toggle" class="menu-btn" aria-label="Menu">☰</button>
+    <div class="mobile-brand">📚 SAT Practice</div>
+    <button id="mobile-theme" class="theme-btn" aria-label="Toggle dark mode">🌙</button>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main id="main-content" class="main-content">
+
+    <!-- ============ DASHBOARD ============ -->
+    <div id="page-dashboard" class="page active">
+      <div class="page-header">
+        <h1>Welcome Back</h1>
+        <p class="subtitle">Your SAT preparation hub</p>
+      </div>
+
+      <!-- Resume Banner -->
+      <div id="resume-banner" class="card" style="display:none;background:var(--accent-light);border-color:var(--accent)">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+          <div>
+            <h3 style="margin-bottom:4px">⏸️ You have a test in progress</h3>
+            <p style="color:var(--text-secondary);font-size:14px;margin:0">Pick up where you left off.</p>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-primary" id="btn-resume-test">Resume Test</button>
+            <button class="btn btn-ghost" id="btn-discard-saved">Discard</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card accent">
+          <div class="stat-icon">📝</div>
+          <div class="stat-info">
+            <div class="stat-value" id="dash-tests-taken">0</div>
+            <div class="stat-label">Tests Taken</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🎯</div>
+          <div class="stat-info">
+            <div class="stat-value" id="dash-predicted-score">—</div>
+            <div class="stat-label">Predicted Score</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📖</div>
+          <div class="stat-info">
+            <div class="stat-value" id="dash-rw-score">—</div>
+            <div class="stat-label">R&W Score</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🔢</div>
+          <div class="stat-info">
+            <div class="stat-value" id="dash-math-score">—</div>
+            <div class="stat-label">Math Score</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Target Score -->
+      <div class="card target-card">
+        <h3>🎯 Set Your Target Score</h3>
+        <div class="target-input-row">
+          <input type="range" id="target-slider" min="400" max="1600" step="10" value="1200">
+          <span class="target-display" id="target-display">1200</span>
+        </div>
+        <div class="target-bar-wrap">
+          <div class="target-bar">
+            <div class="target-fill" id="target-fill" style="width:0%"></div>
+            <div class="target-marker" id="target-marker" style="left:66.7%"></div>
+          </div>
+          <div class="target-labels"><span>400</span><span>1600</span></div>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="card">
+        <h3>📋 Recent Activity</h3>
+        <div id="recent-activity" class="activity-list">
+          <div class="empty-state">No tests taken yet. Start your first practice test!</div>
+        </div>
+      </div>
+
+      <!-- Quick Start -->
+      <div class="card">
+        <h3>🚀 Quick Start</h3>
+        <div class="quick-actions">
+          <button class="btn btn-primary" onclick="App.navigate('tests')">Take a Practice Test</button>
+          <button class="btn btn-secondary" onclick="App.navigate('analytics')">View Score Trends</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ TEST SELECTION ============ -->
+    <div id="page-tests" class="page">
+      <div class="page-header">
+        <h1>Practice Tests</h1>
+        <p class="subtitle">Choose a full-length digital SAT practice test</p>
+      </div>
+      <div id="test-list" class="test-grid"></div>
+    </div>
+
+    <!-- ============ TEST TAKING ============ -->
+    <div id="page-test" class="page">
+      <!-- Top Bar -->
+      <div class="test-topbar">
+        <div class="test-topbar-left">
+          <button class="btn btn-sm btn-ghost" id="btn-save-exit">💾 Save & Exit</button>
+          <button class="btn btn-sm btn-ghost" id="btn-exit-test">✕ Exit</button>
+          <span class="test-module-label" id="test-module-label">R&W Module 1</span>
+        </div>
+        <div class="test-topbar-center">
+          <div class="timer-wrap">
+            <span class="timer-icon">⏱</span>
+            <span class="timer" id="test-timer">39:00</span>
+          </div>
+        </div>
+        <div class="test-topbar-right">
+          <span class="progress-text" id="progress-text">1 / 33</span>
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="test-progress-bar">
+        <div class="test-progress-fill" id="test-progress-fill"></div>
+      </div>
+
+      <!-- Question Area -->
+      <div class="test-body">
+        <div class="question-container" id="question-container">
+          <!-- Dynamic question content -->
+        </div>
+
+        <!-- Navigation -->
+        <div class="test-nav">
+          <button class="btn btn-ghost" id="btn-prev">← Previous</button>
+          <button class="btn btn-outline" id="btn-mark">⚑ Mark for Review</button>
+          <button class="btn btn-primary" id="btn-next">Next →</button>
+        </div>
+
+        <!-- Question Map -->
+        <div class="question-map-wrap">
+          <div class="question-map-header">
+            <span>Question Map</span>
+            <button class="btn btn-sm btn-ghost" id="btn-toggle-map">▼</button>
+          </div>
+          <div class="question-map" id="question-map"></div>
+          <div class="map-legend">
+            <span class="legend-item"><span class="dot answered"></span> Answered</span>
+            <span class="legend-item"><span class="dot current"></span> Current</span>
+            <span class="legend-item"><span class="dot marked"></span> Marked</span>
+            <span class="legend-item"><span class="dot unanswered"></span> Unanswered</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module Transition -->
+      <div class="module-transition" id="module-transition" style="display:none">
+        <div class="transition-card">
+          <h2 id="transition-title">Module Complete</h2>
+          <p id="transition-desc">Take a short break before continuing.</p>
+          <button class="btn btn-primary btn-lg" id="btn-continue-module">Continue</button>
+        </div>
+      </div>
+
+      <!-- Test Submit Confirmation -->
+      <div class="modal-overlay" id="submit-modal" style="display:none">
+        <div class="modal">
+          <h2>Submit Test?</h2>
+          <p id="submit-summary">You have answered X of Y questions.</p>
+          <div class="modal-actions">
+            <button class="btn btn-ghost" onclick="document.getElementById('submit-modal').style.display='none'">Go Back</button>
+            <button class="btn btn-primary" id="btn-confirm-submit">Submit Test</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ RESULTS ============ -->
+    <div id="page-results" class="page">
+      <div class="page-header">
+        <h1>Test Results</h1>
+        <p class="subtitle" id="results-subtitle"></p>
+      </div>
+
+      <!-- Score Cards -->
+      <div class="score-cards">
+        <div class="score-card total">
+          <div class="score-circle" id="total-score-circle">
+            <svg viewBox="0 0 120 120"><circle class="bg" cx="60" cy="60" r="54"/><circle class="fill" cx="60" cy="60" r="54" id="total-score-ring"/></svg>
+            <div class="score-value" id="total-score-value">—</div>
+          </div>
+          <div class="score-label">Total Score</div>
+          <div class="score-range">out of 1600</div>
+        </div>
+        <div class="score-card">
+          <div class="score-circle small">
+            <svg viewBox="0 0 120 120"><circle class="bg" cx="60" cy="60" r="54"/><circle class="fill rw" cx="60" cy="60" r="54" id="rw-score-ring"/></svg>
+            <div class="score-value" id="rw-score-value">—</div>
+          </div>
+          <div class="score-label">Reading & Writing</div>
+          <div class="score-range">out of 800</div>
+        </div>
+        <div class="score-card">
+          <div class="score-circle small">
+            <svg viewBox="0 0 120 120"><circle class="bg" cx="60" cy="60" r="54"/><circle class="fill math" cx="60" cy="60" r="54" id="math-score-ring"/></svg>
+            <div class="score-value" id="math-score-value">—</div>
+          </div>
+          <div class="score-label">Math</div>
+          <div class="score-range">out of 800</div>
+        </div>
+      </div>
+
+      <!-- Skill Breakdown -->
+      <div class="card">
+        <h3>📊 Skill Breakdown</h3>
+        <div id="skill-breakdown" class="skill-bars"></div>
+      </div>
+
+      <!-- Strengths & Weaknesses -->
+      <div class="card-grid-2">
+        <div class="card">
+          <h3>💪 Strengths</h3>
+          <div id="strengths-list" class="tag-list"></div>
+        </div>
+        <div class="card">
+          <h3>📚 Areas to Improve</h3>
+          <div id="weaknesses-list" class="tag-list"></div>
+        </div>
+      </div>
+
+      <!-- Filter & Review -->
+      <div class="card">
+        <div class="review-header">
+          <h3>📝 Question Review</h3>
+          <div class="review-filters">
+            <select id="review-section-filter">
+              <option value="all">All Sections</option>
+              <option value="rw">Reading & Writing</option>
+              <option value="math">Math</option>
+            </select>
+            <select id="review-result-filter">
+              <option value="all">All</option>
+              <option value="correct">Correct</option>
+              <option value="incorrect">Incorrect</option>
+              <option value="marked">Marked</option>
+            </select>
+            <select id="review-difficulty-filter">
+              <option value="all">All Difficulties</option>
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+          </div>
+        </div>
+        <div id="review-list" class="review-list"></div>
+      </div>
+
+      <!-- Recommendations -->
+      <div class="card">
+        <h3>🎯 Recommended Focus Areas</h3>
+        <div id="result-recommendations"></div>
+      </div>
+    </div>
+
+    <!-- ============ ANALYTICS ============ -->
+    <div id="page-analytics" class="page">
+      <div class="page-header">
+        <h1>Score Prediction</h1>
+        <p class="subtitle">Track your progress and predict your SAT score</p>
+      </div>
+
+      <div class="analytics-score-display">
+        <div class="predicted-main">
+          <div class="predicted-label">Predicted SAT Score</div>
+          <div class="predicted-value" id="pred-main-score">—</div>
+          <div class="predicted-range" id="pred-range">Take more tests for a prediction</div>
+        </div>
+      </div>
+
+      <div class="card-grid-2">
+        <div class="card">
+          <h3>📖 R&W Trend</h3>
+          <canvas id="chart-rw" height="200"></canvas>
+        </div>
+        <div class="card">
+          <h3>🔢 Math Trend</h3>
+          <canvas id="chart-math" height="200"></canvas>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📈 Total Score Trend</h3>
+        <canvas id="chart-total" height="250"></canvas>
+      </div>
+
+      <!-- Target tracking -->
+      <div class="card" id="target-tracking-card">
+        <h3>🎯 Target Score Progress</h3>
+        <div id="target-tracking"></div>
+      </div>
+    </div>
+
+    <!-- ============ RECOMMENDATIONS ============ -->
+    <div id="page-recommendations" class="page">
+      <div class="page-header">
+        <h1>Study Plan</h1>
+        <p class="subtitle">Personalized recommendations based on your performance</p>
+      </div>
+      <div id="study-recommendations" class="recommendations-grid">
+        <div class="card">
+          <h3>📝 Take Your First Test</h3>
+          <p>Complete a practice test to get personalized study recommendations.</p>
+          <button class="btn btn-primary" onclick="App.navigate('tests')">Start a Test</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Overlay for mobile sidebar -->
+  <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+  <script src="questions.js?v=2"></script>
+  <script src="tests34.js?v=2"></script>
+  <script src="app.js?v=2"></script>
+</body>
+</html>
