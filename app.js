@@ -1185,11 +1185,17 @@ container.innerHTML = html;
 function initDesmos() {
 if (state.desmosCalc) return;
 if (typeof Desmos === 'undefined') {
-console.warn('Desmos API not loaded');
+console.warn('Desmos API not loaded yet, retrying in 500ms...');
+setTimeout(initDesmos, 500);
 return;
 }
 const el = document.getElementById('desmos-calculator');
-if (!el) return;
+if (!el) { console.warn('desmos-calculator element not found'); return; }
+if (el.offsetWidth === 0 || el.offsetHeight === 0) {
+console.warn('Desmos element has no dimensions, retrying...');
+setTimeout(initDesmos, 200);
+return;
+}
 try {
 state.desmosCalc = Desmos.calculator(el, {
 keypad: true,
@@ -1197,6 +1203,7 @@ expressions: true,
 settingsMenu: true,
 expressionsTopbar: true
 });
+console.log('Desmos calculator initialized');
 } catch (e) {
 console.warn('Desmos init failed:', e);
 }
@@ -1205,11 +1212,17 @@ console.warn('Desmos init failed:', e);
 function initDesmosPractice() {
 if (state.desmosPracticeCalc) return;
 if (typeof Desmos === 'undefined') {
-console.warn('Desmos API not loaded');
+console.warn('Desmos API not loaded for practice, retrying...');
+setTimeout(initDesmosPractice, 500);
 return;
 }
 const el = document.getElementById('desmos-practice-calc');
-if (!el) return;
+if (!el) { console.warn('desmos-practice-calc not found'); return; }
+if (el.offsetWidth === 0 || el.offsetHeight === 0) {
+console.warn('Practice element has no dimensions, retrying...');
+setTimeout(initDesmosPractice, 200);
+return;
+}
 try {
 state.desmosPracticeCalc = Desmos.calculator(el, {
 keypad: true,
@@ -1217,6 +1230,7 @@ expressions: true,
 settingsMenu: true,
 expressionsTopbar: true
 });
+console.log('Desmos practice initialized');
 } catch (e) {
 console.warn('Desmos practice init failed:', e);
 }
@@ -1237,13 +1251,10 @@ panel.style.display = 'flex';
 state.desmosOpen = true;
 btn.textContent = 'Close';
 btn.classList.add('open');
-// Delay init until after the panel is rendered and has dimensions
-requestAnimationFrame(() => {
+setTimeout(() => {
 initDesmos();
-if (state.desmosCalc) {
-state.desmosCalc.resize();
-}
-});
+if (state.desmosCalc) state.desmosCalc.resize();
+}, 150);
 }
 }
 
@@ -1254,10 +1265,10 @@ const container = document.getElementById('regression-test-list');
 if (!container) return;
 
 // Delay Desmos init until the page is visible and rendered
-requestAnimationFrame(() => {
+setTimeout(() => {
 initDesmosPractice();
 if (state.desmosPracticeCalc) state.desmosPracticeCalc.resize();
-});
+}, 300);
 
 container.innerHTML = tests.map(test => {
 const history = state.testHistory.filter(h => h.testId === test.id);
