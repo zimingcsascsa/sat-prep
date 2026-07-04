@@ -31,21 +31,40 @@
 }
 
 [data-theme="dark"] {
-  --bg: #0f172a;
-  --bg-card: #1e293b;
-  --bg-hover: #334155;
-  --bg-input: #1e293b;
-  --text: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --border: #334155;
-  --accent-light: #1e1b4b;
-  --green-light: #064e3b;
-  --red-light: #450a0a;
-  --yellow-light: #451a03;
-  --blue-light: #172554;
-  --shadow: 0 1px 3px rgba(0,0,0,.3);
-  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,.4);
+  /* Warm dark theme — easy on the eyes */
+  --bg: #1a1612;
+  --bg-card: #242019;
+  --bg-hover: #302b22;
+  --bg-input: #2a2520;
+  --text: #e8e0d4;
+  --text-secondary: #a89b8a;
+  --text-muted: #7a6f62;
+  --border: #3a342c;
+  --accent: #7c6aef;
+  --accent-light: #231e3d;
+  --accent-hover: #9585ff;
+  --green: #34d399;
+  --green-light: #0d2f20;
+  --red: #f87171;
+  --red-light: #3b1111;
+  --yellow: #fbbf24;
+  --yellow-light: #2d2208;
+  --blue: #60a5fa;
+  --blue-light: #0f1f38;
+  --purple: #a78bfa;
+  --orange: #fb923c;
+  --shadow: 0 1px 3px rgba(0,0,0,.4), 0 1px 2px rgba(0,0,0,.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,.5), 0 4px 6px -2px rgba(0,0,0,.4);
+  color-scheme: dark;
+}
+
+/* Desmos dark mode override */
+[data-theme="dark"] .desmos-panel,
+[data-theme="dark"] #desmos-practice-calc {
+  border-color: var(--border);
+}
+[data-theme="dark"] .desmos-panel-header {
+  background: var(--bg-hover);
 }
 
 /* ===== RESET ===== */
@@ -633,6 +652,55 @@ canvas { width: 100% !important; }
 
 /* ===== FOCUS ===== */
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ===== DARK MODE EXTRAS ===== */
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: var(--border);
+}
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+[data-theme="dark"] .score-circle .fill {
+  filter: brightness(1.1);
+}
+[data-theme="dark"] .stat-card.accent {
+  border-left-color: var(--accent);
+}
+[data-theme="dark"] .analytics-score-display {
+  background: linear-gradient(135deg, #2d1f6e, #1a1145);
+}
+[data-theme="dark"] .desmos-toggle-btn {
+  box-shadow: 0 4px 14px rgba(124,106,239,.3);
+}
+[data-theme="dark"] .q-choice:hover,
+[data-theme="dark"] .q-choice.selected {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+[data-theme="dark"] .review-explanation {
+  border-left-color: var(--accent);
+  background: var(--bg-hover);
+}
+[data-theme="dark"] .regression-tutorial {
+  background: var(--accent-light);
+  border-color: var(--accent);
+}
+[data-theme="dark"] .desmos-cheat-item code {
+  background: var(--bg-hover);
+  border-color: var(--border);
+  color: var(--accent);
+}
+
+/* Smooth theme transition */
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+html * {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
 
 /* ===== DESMOS PANEL ===== */
 .desmos-toggle-btn {
