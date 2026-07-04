@@ -630,6 +630,13 @@ const App = (() => {
       clearInterval(state.timer);
       clearSavedTest();
       state.currentTest = null;
+      state.isRegressionTest = false;
+      // Close Desmos panel if open
+      const desmosPanel = document.getElementById('desmos-panel');
+      if (desmosPanel) desmosPanel.style.display = 'none';
+      state.desmosOpen = false;
+      const desmosBtn = document.getElementById('btn-toggle-desmos');
+      if (desmosBtn) { desmosBtn.textContent = '📊 Calculator'; desmosBtn.classList.remove('open'); }
       navigate('tests');
     }
   }
@@ -732,9 +739,18 @@ const App = (() => {
   function checkAnswer(q, userAnswer) {
     if (userAnswer === undefined || userAnswer === '' || userAnswer === null) return false;
     if (q.type === 'gridin') {
-      // Normalize numeric answers
-      const normalize = s => String(s).replace(/\s/g, '').replace(/^0+/, '') || '0';
-      return normalize(userAnswer) === normalize(q.answer);
+      // Normalize numeric answers: trim spaces, compare as numbers when possible
+      const clean = s => String(s).trim().replace(/\s+/g, '');
+      const ua = clean(userAnswer);
+      const ca = clean(q.answer);
+      // Try numeric comparison first
+      const un = parseFloat(ua);
+      const cn = parseFloat(ca);
+      if (!isNaN(un) && !isNaN(cn)) {
+        return Math.abs(un - cn) < 0.01;
+      }
+      // Fallback: case-insensitive string match
+      return ua.toLowerCase() === ca.toLowerCase();
     }
     return String(userAnswer).toUpperCase().charAt(0) === String(q.answer).toUpperCase().charAt(0);
   }

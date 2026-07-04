@@ -1,4 +1,5 @@
-// Regression Practice Tests — 3 short focused tests for Desmos regression mastery
+// Regression Practice Tests — 3 focused tests for Desmos regression mastery
+// Questions modeled after real digital SAT Math Module 2 questions
 window.REGRESSION_TESTS = [
   // ============================================================
   // TEST 1: LINEAR REGRESSION
@@ -6,7 +7,7 @@ window.REGRESSION_TESTS = [
   {
     id: 'reg_linear',
     name: 'Linear Regression',
-    description: '5 questions on linear regression with Desmos — get instant step-by-step help when you miss one',
+    description: '5 questions on linear regression — practice using Desmos for tables, lines of best fit, and predictions',
     badge: '📐 Desmos',
     modules: {
       rw1: [], rw2: [],
@@ -15,18 +16,18 @@ window.REGRESSION_TESTS = [
           id: 'reg_lin_q1', module: 'math1', questionNumber: 1, type: 'gridin',
           skill: 'Problem Solving and Data Analysis', difficulty: 'easy',
           passage: '',
-          stem: 'A student collected data on hours studied (x) and test score (y):\n\nx: 2, 4, 6, 8, 10\ny: 65, 72, 78, 86, 93\n\nUsing linear regression (y = mx + b), what is the slope m? (Round to 2 decimal places)',
-          choices: null, answer: '3.50',
-          explanation: 'The linear regression line is y = 3.50x + 58.00. The slope m = 3.50 means each additional hour of study is associated with a 3.50-point increase in score.',
+          stem: 'A researcher collects data on the number of hours students study per week (x) and their GPA (y). The data are shown in the table below.\n\nHours (x): 2, 4, 6, 8, 10\nGPA (y): 2.1, 2.5, 2.8, 3.2, 3.6\n\nA linear regression model is fit to the data. What is the slope of the line of best fit? (Round to 2 decimal places)',
+          choices: null, answer: '0.19',
+          explanation: 'Using linear regression (y ~ mx + b in Desmos), the slope m ≈ 0.19. This means each additional hour of study per week is associated with a 0.19 increase in GPA.',
           desmosTutorial: {
-            title: 'How to find the slope using Desmos regression',
+            title: 'How to find the slope using Desmos',
             steps: [
-              'Click the + button and select "Table"',
+              'Click the <strong>+</strong> button in Desmos and select <strong>Table</strong>',
               'Enter the x values: 2, 4, 6, 8, 10 in the first column',
-              'Enter the y values: 65, 72, 78, 86, 93 in the second column',
+              'Enter the y values: 2.1, 2.5, 2.8, 3.2, 3.6 in the second column',
               'In a new expression line, type: <code>y₁ ~ mx₁ + b</code>',
-              'Desmos will show the values of m and b in the expression list',
-              'Read the value of <strong>m</strong> — that\'s your slope!'
+              'Desmos shows the regression equation. The coefficient of x₁ is your slope.',
+              'Read the value of <strong>m</strong> from the expression list.'
             ]
           }
         },
@@ -34,69 +35,86 @@ window.REGRESSION_TESTS = [
           id: 'reg_lin_q2', module: 'math1', questionNumber: 2, type: 'gridin',
           skill: 'Problem Solving and Data Analysis', difficulty: 'easy',
           passage: '',
-          stem: 'Using the same data:\n\nx: 2, 4, 6, 8, 10\ny: 65, 72, 78, 86, 93\n\nWhat is the y-intercept b of the line of best fit? (Round to 2 decimal places)',
-          choices: null, answer: '58.00',
-          explanation: 'From the linear regression y = 3.50x + 58.00, the y-intercept b = 58.00. This predicts a score of 58 for 0 hours of study.',
-          desmosTutorial: {
-            title: 'How to find the y-intercept using Desmos',
-            steps: [
-              'After entering the table and typing <code>y₁ ~ mx₁ + b</code>',
-              'Desmos shows both m and b in the expression list',
-              'Read the value of <strong>b</strong> — that\'s your y-intercept!',
-              'The y-intercept is the predicted y value when x = 0'
-            ]
-          }
-        },
-        {
-          id: 'reg_lin_q3', module: 'math1', questionNumber: 3, type: 'gridin',
-          skill: 'Problem Solving and Data Analysis', difficulty: 'medium',
-          passage: '',
-          stem: 'A study found the linear relationship between temperature in °F (x) and ice cream sales in dollars (y) to be y = 4.2x − 130. According to this model, what temperature would produce exactly $200 in sales?',
-          choices: null, answer: '78.57',
-          explanation: 'Set y = 200: 200 = 4.2x − 130 → 330 = 4.2x → x = 330/4.2 ≈ 78.57°F.',
-          desmosTutorial: {
-            title: 'How to solve this with Desmos',
-            steps: [
-              'Type the equation: <code>y = 4.2x - 130</code>',
-              'Type: <code>y = 200</code> (as a second line)',
-              'Click the intersection point of the two lines',
-              'Desmos shows the x-value at the intersection — that\'s your answer!'
-            ]
-          }
-        },
-        {
-          id: 'reg_lin_q4', module: 'math1', questionNumber: 4, type: 'gridin',
-          skill: 'Problem Solving and Data Analysis', difficulty: 'medium',
-          passage: '',
-          stem: 'The scatterplot below shows the relationship between advertising spend (x, in thousands of dollars) and revenue (y, in thousands of dollars) for 8 months. The line of best fit has r = 0.94.\n\nx: 5, 8, 10, 12, 15, 18, 20, 25\ny: 42, 55, 60, 68, 78, 88, 95, 110\n\nUsing regression, what revenue does the model predict for $22,000 in advertising?',
-          choices: null, answer: '99.50',
-          explanation: 'The regression equation is approximately y = 3.88x + 14.13. For x = 22: y = 3.88(22) + 14.13 ≈ 99.50, so predicted revenue is $99,500.',
+          stem: 'Using the same data from Question 1:\n\nHours (x): 2, 4, 6, 8, 10\nGPA (y): 2.1, 2.5, 2.8, 3.2, 3.6\n\nWhat GPA does the linear regression model predict for a student who studies 5 hours per week? (Round to 2 decimal places)',
+          choices: null, answer: '2.65',
+          explanation: 'The regression equation is approximately y = 0.19x + 1.70. At x = 5: y = 0.19(5) + 1.70 = 0.95 + 1.70 = 2.65. (Exact value depends on rounding.)',
           desmosTutorial: {
             title: 'How to make a prediction using Desmos regression',
             steps: [
-              'Enter the data in a Desmos table',
-              'Type: <code>y₁ ~ mx₁ + b</code>',
-              'Read the equation from the expression list',
-              'Substitute x = 22 into the equation to get your prediction',
-              'Or type <code>3.88(22) + 14.13</code> directly in Desmos'
+              'After entering the table and typing <code>y₁ ~ mx₁ + b</code>, read the equation Desmos gives you',
+              'In a new expression line, type the full equation with x = 5',
+              'For example, if Desmos gives y = 0.185x + 1.72, type: <code>0.185(5) + 1.72</code>',
+              'Desmos evaluates it instantly — that\'s your predicted GPA'
             ]
           }
         },
         {
-          id: 'reg_lin_q5', module: 'math1', questionNumber: 5, type: 'gridin',
-          skill: 'Problem Solving and Data Analysis', difficulty: 'hard',
+          id: 'reg_lin_q3', module: 'math1', questionNumber: 3, type: 'multiplechoice',
+          skill: 'Problem Solving and Data Analysis', difficulty: 'medium',
           passage: '',
-          stem: 'A researcher measures the relationship between study hours (x) and GPA (y). The regression output gives:\n\ny = 0.12x + 2.1\nr = 0.87\nr² = 0.7569\n\nWhat percentage of the variation in GPA is explained by study hours?',
-          choices: null, answer: '75.69',
-          explanation: 'r² (R-squared) tells us the percentage of variation in y explained by x. r² = 0.7569 = 75.69%. Note: r² is always shown in Desmos regression output.',
+          stem: 'A scatterplot shows the relationship between the number of hours spent practicing a musical instrument (x) and the score on a proficiency test (y). The line of best fit has the equation y = 8.5x + 42. Which statement best interprets the slope of this line?',
+          choices: [
+            'A) For each additional hour of practice, the predicted test score increases by 8.5 points.',
+            'B) For each additional hour of practice, the predicted test score increases by 42 points.',
+            'C) A student who practices 0 hours is predicted to score 8.5 points.',
+            'D) The test score increases by 42 points for every 8.5 hours of practice.'
+          ],
+          answer: 'A',
+          explanation: 'In the equation y = 8.5x + 42, the slope is 8.5. This means for each 1-unit increase in x (hours practiced), y (test score) increases by 8.5 points. The y-intercept (42) is the predicted score for 0 hours of practice.',
+          desmosTutorial: {
+            title: 'How to interpret slope in Desmos',
+            steps: [
+              'Type the equation <code>y = 8.5x + 42</code> in Desmos',
+              'The slope (8.5) is the coefficient of x — it tells you how much y changes for each +1 in x',
+              'The y-intercept (42) is the value of y when x = 0',
+              'Use the graph to verify: move along the line and check that y increases by 8.5 for every 1 unit increase in x'
+            ]
+          }
+        },
+        {
+          id: 'reg_lin_q4', module: 'math1', questionNumber: 4, type: 'multiplechoice',
+          skill: 'Problem Solving and Data Analysis', difficulty: 'medium',
+          passage: '',
+          stem: 'A study records the outdoor temperature in °F (x) and ice cream sales in dollars (y) for 10 randomly selected days. The regression output shows:\n\ny = 4.2x − 130\nr = 0.91\nR² = 0.8281\n\nWhat is the best interpretation of R² in context?',
+          choices: [
+            'A) 82.81% of the variation in temperature is explained by ice cream sales.',
+            'B) 82.81% of the variation in ice cream sales is explained by the linear relationship with temperature.',
+            'C) The correlation between temperature and sales is 0.8281.',
+            'D) On 82.81% of days, the prediction is accurate.'
+          ],
+          answer: 'B',
+          explanation: 'R² tells us the proportion of variation in the response variable (y = ice cream sales) that is explained by the linear model with the predictor variable (x = temperature). R² = 0.8281 = 82.81%. Choice A reverses x and y. C confuses r with R². D is not what R² means.',
           desmosTutorial: {
             title: 'How to find R² in Desmos',
             steps: [
               'Enter data in a table and type <code>y₁ ~ mx₁ + b</code>',
-              'Click on the regression equation in the expression list',
-              'Desmos shows R² (called R-squared) in the details panel',
-              'R² as a percentage = percentage of variation explained',
-              'Multiply R² by 100 to get the percentage'
+              'Click on the regression equation in the expression list on the left',
+              'Desmos shows r and R² in the details panel',
+              'R² is always between 0 and 1 — multiply by 100 to get a percentage',
+              'R² measures how well the line fits the data (higher = better fit)'
+            ]
+          }
+        },
+        {
+          id: 'reg_lin_q5', module: 'math1', questionNumber: 5, type: 'multiplechoice',
+          skill: 'Problem Solving and Data Analysis', difficulty: 'hard',
+          passage: '',
+          stem: 'A linear regression model predicts a student\'s SAT score (y) from the number of practice tests taken (x). The equation is y = 28x + 920. If a student actually scored 1180 after taking 10 practice tests, what is the residual for this student?',
+          choices: [
+            'A) −20',
+            'B) 20',
+            'C) 1200',
+            'D) −1200'
+          ],
+          answer: 'A',
+          explanation: 'Predicted score = 28(10) + 920 = 280 + 920 = 1200. Residual = actual − predicted = 1180 − 1200 = −20. A negative residual means the model overpredicted.',
+          desmosTutorial: {
+            title: 'How to calculate residuals in Desmos',
+            steps: [
+              'Type the regression equation: <code>y = 28x + 920</code>',
+              'Type the predicted value at x = 10: <code>28(10) + 920</code> = 1200',
+              'Residual = actual y − predicted y = 1180 − 1200 = −20',
+              'In Desmos, you can also plot the actual point (10, 1180) to see how far it is from the line'
             ]
           }
         }
@@ -106,12 +124,12 @@ window.REGRESSION_TESTS = [
   },
 
   // ============================================================
-  // TEST 2: QUADRATIC REGRESSION
+  // TEST 2: QUADRATIC & POLYNOMIAL REGRESSION
   // ============================================================
   {
     id: 'reg_quadratic',
     name: 'Quadratic Regression',
-    description: '5 questions on quadratic regression with Desmos — perfect for curve-fitting problems',
+    description: '5 questions on quadratic regression — curve fitting, vertex, and real-world parabolic models',
     badge: '📐 Desmos',
     modules: {
       rw1: [], rw2: [],
@@ -120,16 +138,17 @@ window.REGRESSION_TESTS = [
           id: 'reg_quad_q1', module: 'math1', questionNumber: 1, type: 'gridin',
           skill: 'Problem Solving and Data Analysis', difficulty: 'easy',
           passage: '',
-          stem: 'A ball is thrown into the air. Its height y (in feet) at time x (in seconds) is recorded:\n\nx: 0, 1, 2, 3, 4, 5\ny: 6, 40, 62, 72, 70, 56\n\nUsing quadratic regression (y = ax² + bx + c), what is the value of a? (Round to 2 decimal places)',
-          choices: null, answer: '-16.00',
-          explanation: 'Quadratic regression gives y = −16x² + 48x + 6. The coefficient a = −16 (negative because the parabola opens downward).',
+          stem: 'A ball is thrown upward from a platform. Its height h (in feet) after t seconds is recorded:\n\nt: 0, 1, 2, 3, 4, 5\nh: 6, 40, 62, 72, 70, 56\n\nUsing quadratic regression (h = at² + bt + c), what is the value of a? (Round to the nearest integer)',
+          choices: null, answer: '-6',
+          explanation: 'Quadratic regression gives h = −6t² + 40t + 6. The coefficient a = −6 (negative because the parabola opens downward, representing gravity). Verify: h(0) = 6 ✓, h(1) = −6 + 40 + 6 = 40 ✓, h(3) = −54 + 120 + 6 = 72 ✓.',
           desmosTutorial: {
             title: 'How to do quadratic regression in Desmos',
             steps: [
-              'Enter the data in a Desmos table (x and y values)',
-              'In a new expression line, type: <code>y₁ ~ ax₁² + bx₁ + c</code>',
-              'Desmos fits a parabola and shows a, b, and c',
-              'Read the value of <strong>a</strong> — it\'s the coefficient of x²'
+              'Enter the t values (0,1,2,3,4,5) and h values (6,40,62,72,70,56) in a Desmos table',
+              'In a new expression line, type: <code>h₁ ~ at₁² + bt₁ + c</code>',
+              'Desmos fits a parabola and shows a, b, and c in the expression list',
+              'Read the value of <strong>a</strong> — the coefficient of t²',
+              'Negative a means the parabola opens downward (like a thrown ball)'
             ]
           }
         },
@@ -137,69 +156,86 @@ window.REGRESSION_TESTS = [
           id: 'reg_quad_q2', module: 'math1', questionNumber: 2, type: 'gridin',
           skill: 'Problem Solving and Data Analysis', difficulty: 'easy',
           passage: '',
-          stem: 'Using the same data from Q1:\n\nx: 0, 1, 2, 3, 4, 5\ny: 6, 40, 62, 72, 70, 56\n\nWhat height does the quadratic model predict at x = 2.5 seconds?',
-          choices: null, answer: '67.50',
-          explanation: 'From y = −16x² + 48x + 6: y = −16(6.25) + 48(2.5) + 6 = −100 + 120 + 6 = 26. Wait, let me recalculate: −16(6.25) = −100, 48(2.5) = 120, +6 = 26. Hmm, that gives 26, not 67.5. Let me recheck with the actual regression: the regression gives approximately y = −4x² + 24x + 8. At x=2.5: −4(6.25)+24(2.5)+8 = −25+60+8 = 43. Actually, let me just use Desmos to verify. The answer depends on the exact regression coefficients.',
+          stem: 'Using the model h = −6t² + 40t + 6 from Question 1, what is the maximum height the ball reaches?',
+          choices: null, answer: '72.67',
+          explanation: 'The vertex is at t = −b/(2a) = −40/(2·(−6)) = 40/12 = 10/3 ≈ 3.33 seconds. h(10/3) = −6(100/9) + 40(10/3) + 6 = −200/3 + 400/3 + 6 = 200/3 + 6 = 218/3 ≈ 72.67 feet.',
           desmosTutorial: {
-            title: 'How to evaluate a regression model at a specific point',
+            title: 'How to find the maximum of a parabola in Desmos',
             steps: [
-              'After fitting the regression, type the equation Desmos gives you',
-              'Replace x with 2.5 in the equation',
-              'Or type the full expression: <code>-16(2.5)² + 48(2.5) + 6</code>',
-              'Desmos calculates the answer instantly'
+              'Type: <code>h = -6t² + 40t + 6</code>',
+              'Click on the <strong>vertex</strong> (highest point) of the parabola',
+              'Desmos shows the coordinates — the y-value is the maximum height',
+              'Or use the formula: vertex at t = −b/(2a) = −40/(−12) = 3.33'
             ]
           }
         },
         {
-          id: 'reg_quad_q3', module: 'math1', questionNumber: 3, type: 'gridin',
+          id: 'reg_quad_q3', module: 'math1', questionNumber: 3, type: 'multiplechoice',
           skill: 'Problem Solving and Data Analysis', difficulty: 'medium',
           passage: '',
-          stem: 'The quadratic regression model for a company\'s profit (y, in thousands) based on units produced (x, in hundreds) is:\n\ny = −2.5x² + 30x − 40\n\nHow many units maximize profit?',
-          choices: null, answer: '600',
-          explanation: 'The vertex of y = −2.5x² + 30x − 40 is at x = −b/(2a) = −30/(2×−2.5) = −30/−5 = 6. Since x is in hundreds, 6 × 100 = 600 units.',
+          stem: 'A company\'s profit P (in thousands of dollars) based on the number of units produced x (in hundreds) is modeled by P = −2.5x² + 30x − 40. How many units should the company produce to maximize profit?',
+          choices: [
+            'A) 300',
+            'B) 600',
+            'C) 1,000',
+            'D) 1,200'
+          ],
+          answer: 'B',
+          explanation: 'The vertex is at x = −b/(2a) = −30/(2·(−2.5)) = −30/(−5) = 6. Since x is in hundreds, 6 × 100 = 600 units. You can verify by clicking the vertex in Desmos.',
           desmosTutorial: {
             title: 'How to find the vertex in Desmos',
             steps: [
               'Type: <code>y = -2.5x² + 30x - 40</code>',
               'Click on the vertex (highest point) of the parabola',
-              'Desmos shows the coordinates — the x-value is your answer',
-              'Remember: x is in hundreds, so multiply by 100 for units'
+              'Desmos shows the x-coordinate — that\'s the production level that maximizes profit',
+              'Remember: x is in hundreds, so multiply by 100 for the actual number of units'
             ]
           }
         },
         {
-          id: 'reg_quad_q4', module: 'math1', questionNumber: 4, type: 'gridin',
+          id: 'reg_quad_q4', module: 'math1', questionNumber: 4, type: 'multiplechoice',
           skill: 'Problem Solving and Data Analysis', difficulty: 'medium',
           passage: '',
-          stem: 'A scientist measures the growth of a plant over time:\n\nWeek (x): 1, 2, 3, 4, 5, 6, 7\nHeight cm (y): 3, 8, 18, 30, 42, 55, 68\n\nUsing quadratic regression, what is the predicted height at week 8? (Round to 1 decimal place)',
-          choices: null, answer: '83.0',
-          explanation: 'The quadratic regression gives approximately y = 1.25x² + 2.14x − 1.14. At x = 8: y = 1.25(64) + 2.14(8) − 1.14 ≈ 80 + 17.14 − 1.14 ≈ 96. Hmm, let me recheck. The exact answer depends on the regression output. Use Desmos to verify.',
+          stem: 'A scientist measures the height of a plant (in cm) over several weeks and fits a quadratic model: h = 1.2w² + 0.8w + 3, where w is the number of weeks. According to this model, which of the following is closest to the height at week 6?',
+          choices: [
+            'A) 36 cm',
+            'B) 48 cm',
+            'C) 51 cm',
+            'D) 60 cm'
+          ],
+          answer: 'C',
+          explanation: 'h(6) = 1.2(36) + 0.8(6) + 3 = 43.2 + 4.8 + 3 = 51 cm. You can verify by typing the equation in Desmos and checking the value at w = 6.',
           desmosTutorial: {
-            title: 'How to predict using quadratic regression',
+            title: 'How to evaluate a quadratic model in Desmos',
             steps: [
-              'Enter the data in a Desmos table',
-              'Type: <code>y₁ ~ ax₁² + bx₁ + c</code>',
-              'Read the coefficients a, b, c from the expression list',
-              'Substitute x = 8 into the equation',
-              'Or type the full equation with x = 8 directly in Desmos'
+              'Type: <code>h = 1.2w² + 0.8w + 3</code>',
+              'In a new line, type: <code>h(6)</code> or <code>1.2(6)² + 0.8(6) + 3</code>',
+              'Desmos evaluates it: 43.2 + 4.8 + 3 = 51',
+              'You can also click on the curve at w = 6 to see the point'
             ]
           }
         },
         {
-          id: 'reg_quad_q5', module: 'math1', questionNumber: 5, type: 'gridin',
+          id: 'reg_quad_q5', module: 'math1', questionNumber: 5, type: 'multiplechoice',
           skill: 'Problem Solving and Data Analysis', difficulty: 'hard',
           passage: '',
-          stem: 'A quadratic regression model gives y = −0.5x² + 6x + 2. For what values of x is y ≥ 15? (Enter the smaller value, rounded to 1 decimal place)',
-          choices: null, answer: '2.7',
-          explanation: 'Set y = 15: −0.5x² + 6x + 2 = 15 → −0.5x² + 6x − 13 = 0 → 0.5x² − 6x + 13 = 0. Using the quadratic formula: x = (6 ± √(36−26))/1 = 6 ± √10 ≈ 6 ± 3.16. So x ≈ 2.84 or 9.16. The smaller value is approximately 2.8. y ≥ 15 between x ≈ 2.8 and x ≈ 9.2.',
+          stem: 'The quadratic regression model y = −0.5x² + 6x + 2 is used to predict values. For which interval is y ≥ 15?',
+          choices: [
+            'A) 2.8 ≤ x ≤ 9.2',
+            'B) 0 ≤ x ≤ 6',
+            'C) 3 ≤ x ≤ 9',
+            'D) x ≤ 2.8 or x ≥ 9.2'
+          ],
+          answer: 'A',
+          explanation: 'Set y = 15: −0.5x² + 6x + 2 = 15 → −0.5x² + 6x − 13 = 0 → x² − 12x + 26 = 0. Using the quadratic formula: x = (12 ± √(144−104))/2 = (12 ± √40)/2 = 6 ± √10 ≈ 6 ± 3.16. So y ≥ 15 for 2.84 ≤ x ≤ 9.16, approximately 2.8 ≤ x ≤ 9.2.',
           desmosTutorial: {
             title: 'How to solve inequalities with Desmos',
             steps: [
               'Type: <code>y = -0.5x² + 6x + 2</code>',
-              'Type: <code>y = 15</code> (as a horizontal line)',
-              'Click the intersection points to find the x-values',
-              'The region where the parabola is above the line is where y ≥ 15',
-              'Read the smaller x-value from the intersection point'
+              'Type: <code>y = 15</code> (a horizontal line)',
+              'Click the <strong>intersection points</strong> to find where the curves meet',
+              'The parabola is above y = 15 between the two intersection points',
+              'Read the x-values of the intersections — that\'s your interval'
             ]
           }
         }
@@ -214,7 +250,7 @@ window.REGRESSION_TESTS = [
   {
     id: 'reg_exponential',
     name: 'Exponential & Power Regression',
-    description: '5 questions on exponential and power regression with Desmos',
+    description: '5 questions on exponential growth/decay and power models — the hardest regression type on the SAT',
     badge: '📐 Desmos',
     modules: {
       rw1: [], rw2: [],
@@ -223,17 +259,17 @@ window.REGRESSION_TESTS = [
           id: 'reg_exp_q1', module: 'math1', questionNumber: 1, type: 'gridin',
           skill: 'Problem Solving and Data Analysis', difficulty: 'easy',
           passage: '',
-          stem: 'A bacteria population grows exponentially. The data:\n\nHours (x): 0, 1, 2, 3, 4, 5\nPopulation (y): 100, 150, 225, 340, 510, 765\n\nUsing exponential regression (y = a·bˣ), what is the growth factor b? (Round to 2 decimal places)',
+          stem: 'A bacteria population is measured at hourly intervals:\n\nHour (x): 0, 1, 2, 3, 4, 5\nPopulation (y): 200, 300, 450, 675, 1013, 1519\n\nUsing exponential regression (y = a·bˣ), what is the growth factor b? (Round to 2 decimal places)',
           choices: null, answer: '1.50',
-          explanation: 'Exponential regression gives y = 100 × 1.50ˣ. The growth factor b = 1.50, meaning the population increases by 50% each hour.',
+          explanation: 'Exponential regression gives y ≈ 200 × 1.50ˣ. The growth factor b = 1.50, meaning the population increases by 50% each hour. Verify: 200 × 1.5 = 300 ✓, 300 × 1.5 = 450 ✓.',
           desmosTutorial: {
             title: 'How to do exponential regression in Desmos',
             steps: [
-              'Enter the data in a Desmos table',
+              'Enter the data in a Desmos table (x and y columns)',
               'In a new expression line, type: <code>y₁ ~ a·bˣ¹</code>',
-              'Note: use the · symbol (Shift+8) between a and b',
-              'Desmos shows a (initial value) and b (growth factor)',
-              'Read <strong>b</strong> — if b > 1 it\'s growth, if b < 1 it\'s decay'
+              'Important: use the · symbol (Shift+8) between a and bˣ¹',
+              'Desmos shows a (initial value) and b (growth/decay factor)',
+              'If b > 1, it\'s growth. If 0 < b < 1, it\'s decay.'
             ]
           }
         },
@@ -241,69 +277,88 @@ window.REGRESSION_TESTS = [
           id: 'reg_exp_q2', module: 'math1', questionNumber: 2, type: 'gridin',
           skill: 'Problem Solving and Data Analysis', difficulty: 'easy',
           passage: '',
-          stem: 'Using the regression model from Q1 (y = 100 × 1.50ˣ), what is the predicted population after 7 hours? (Round to the nearest whole number)',
-          choices: null, answer: '1709',
-          explanation: 'y = 100 × 1.50⁷ = 100 × 17.0859 ≈ 1709 bacteria.',
+          stem: 'Using the model y = 200 × 1.50ˣ from Question 1, what is the predicted population at hour 8? (Round to the nearest whole number)',
+          choices: null, answer: '5126',
+          explanation: 'y = 200 × 1.50⁸ = 200 × 25.6289 ≈ 5,126 bacteria.',
           desmosTutorial: {
             title: 'How to evaluate exponential models in Desmos',
             steps: [
-              'Type: <code>100 · 1.5^7</code> in a new expression',
-              'Desmos calculates the answer: approximately 1708.59',
-              'Round to the nearest whole number: 1709'
+              'Type: <code>200 · 1.5^8</code> in a new Desmos expression',
+              'Desmos calculates: 200 × 25.6289 ≈ 5125.78',
+              'Round to the nearest whole number: 5126',
+              'Note: use ^ for exponents in Desmos'
             ]
           }
         },
         {
-          id: 'reg_exp_q3', module: 'math1', questionNumber: 3, type: 'gridin',
+          id: 'reg_exp_q3', module: 'math1', questionNumber: 3, type: 'multiplechoice',
           skill: 'Problem Solving and Data Analysis', difficulty: 'medium',
           passage: '',
-          stem: 'A car\'s value depreciates exponentially:\n\nYear (x): 0, 1, 2, 3, 4, 5\nValue $ (y): 32000, 25600, 20480, 16384, 13107, 10486\n\nUsing exponential regression, what is the annual decay rate as a percentage? (Round to 1 decimal place)',
-          choices: null, answer: '20.0',
-          explanation: 'The regression gives y = 32000 × 0.80ˣ. Since b = 0.80, the car loses 20% of its value each year. Decay rate = 1 − 0.80 = 0.20 = 20%.',
+          stem: 'A new car depreciates in value over time. The table shows the car\'s value at the end of each year:\n\nYear (x): 0, 1, 2, 3, 4\nValue $ (y): 32,000, 25,600, 20,480, 16,384, 13,107\n\nAn exponential regression model is fit to the data. Which is the best interpretation of the decay factor?',
+          choices: [
+            'A) The car loses $6,400 each year.',
+            'B) The car retains 80% of its value each year, losing 20% annually.',
+            'C) The car retains 20% of its value each year.',
+            'D) The car\'s value decreases by a factor of 0.20 each year.'
+          ],
+          answer: 'B',
+          explanation: 'Exponential regression gives y ≈ 32,000 × 0.80ˣ. The decay factor b = 0.80 means the car retains 80% of its value each year (loses 20%). Choice A describes linear decay. C and D misinterpret the decay factor.',
           desmosTutorial: {
-            title: 'How to find decay rate from exponential regression',
+            title: 'How to interpret exponential decay in Desmos',
             steps: [
               'Enter the data in a Desmos table',
               'Type: <code>y₁ ~ a·bˣ¹</code>',
-              'Read the value of b from the expression list',
-              'If b = 0.80, the decay rate = 1 − 0.80 = 0.20 = 20%',
-              'The decay rate is (1 − b) × 100%'
+              'Read b from the expression list — if b = 0.80, the decay rate is 1 − 0.80 = 0.20 = 20%',
+              'To convert decay factor to percentage loss: (1 − b) × 100%',
+              'To convert to percentage retained: b × 100%'
             ]
           }
         },
         {
-          id: 'reg_exp_q4', module: 'math1', questionNumber: 4, type: 'gridin',
+          id: 'reg_exp_q4', module: 'math1', questionNumber: 4, type: 'multiplechoice',
           skill: 'Problem Solving and Data Analysis', difficulty: 'medium',
           passage: '',
-          stem: 'A city\'s population data fits a power model:\n\nYear since 2000 (x): 0, 5, 10, 15, 20\nPopulation thousands (y): 50, 72, 89, 104, 118\n\nUsing power regression (y = a·xᵇ), what population does the model predict for 2025 (x = 25)? (Round to nearest thousand)',
-          choices: null, answer: '131',
-          explanation: 'Power regression gives approximately y = 50 × x^0.47. At x = 25: y ≈ 50 × 25^0.47 ≈ 50 × 2.61 ≈ 131 thousand.',
-          desmosTutorial: {
-            title: 'How to do power regression in Desmos',
-            steps: [
-              'Enter the data in a Desmos table',
-              'Type: <code>y₁ ~ a·x₁ᵇ</code>',
-              'Desmos shows a and b in the expression list',
-              'To predict for x = 25, type: <code>a · 25^b</code> using the values Desmos gave',
-              'Or substitute directly into the equation'
-            ]
-          }
-        },
-        {
-          id: 'reg_exp_q5', module: 'math1', questionNumber: 5, type: 'gridin',
-          skill: 'Problem Solving and Data Analysis', difficulty: 'hard',
-          passage: '',
-          stem: 'A scientist compares two models for the same data set:\n\nModel A (exponential): R² = 0.9621\nModel B (quadratic): R² = 0.8934\n\nWhat is the difference in R² values between the two models? (Round to 4 decimal places)',
-          choices: null, answer: '0.0687',
-          explanation: 'R² difference = 0.9621 − 0.8934 = 0.0687. The exponential model explains about 6.87% more variation in the data than the quadratic model, making it a better fit.',
+          stem: 'A town\'s population data is modeled using both an exponential and a quadratic regression:\n\nExponential: R² = 0.9753\nQuadratic: R² = 0.9621\n\nWhich conclusion is best supported by these values?',
+          choices: [
+            'A) The exponential model is a better fit because it has a higher R².',
+            'B) The quadratic model is a better fit because it has a lower R².',
+            'C) Both models fit equally well because both R² values are close to 1.',
+            'D) Neither model is a good fit because R² should be exactly 1.'
+          ],
+          answer: 'A',
+          explanation: 'R² measures how well the model fits the data — higher is better. The exponential model (R² = 0.9753) explains 97.53% of the variation, while the quadratic (R² = 0.9621) explains 96.21%. The exponential model is the better fit, though both are strong.',
           desmosTutorial: {
             title: 'How to compare regression models in Desmos',
             steps: [
-              'Enter the data in a Desmos table',
-              'Type both regression equations: <code>y₁ ~ a·bˣ¹</code> and <code>y₁ ~ ax₁² + bx₁ + c</code>',
-              'Click on each regression line to see its R² value',
-              'The model with the higher R² is the better fit',
-              'Subtract the smaller R² from the larger R² for the difference'
+              'Enter the data in a table',
+              'Type both models: <code>y₁ ~ a·bˣ¹</code> and <code>y₁ ~ ax₁² + bx₁ + c</code>',
+              'Click on each regression curve to see its R² value',
+              'The model with the <strong>higher R²</strong> is the better fit',
+              'R² closer to 1 means the model explains more of the variation in the data'
+            ]
+          }
+        },
+        {
+          id: 'reg_exp_q5', module: 'math1', questionNumber: 5, type: 'multiplechoice',
+          skill: 'Problem Solving and Data Analysis', difficulty: 'hard',
+          passage: '',
+          stem: 'A scientist models the spread of a virus using the exponential equation P = 500 · 1.03ᵗ, where P is the number of cases and t is the number of days. After how many days will the number of cases first exceed 2,000?',
+          choices: [
+            'A) 37',
+            'B) 42',
+            'C) 47',
+            'D) 52'
+          ],
+          answer: 'C',
+          explanation: 'Set P = 2000: 2000 = 500 · 1.03ᵗ → 4 = 1.03ᵗ → t = ln(4)/ln(1.03) = 1.3863/0.02956 ≈ 46.9. So t ≈ 47 days. You can verify in Desmos by graphing both P = 500·1.03ˣ and P = 2000 and finding the intersection.',
+          desmosTutorial: {
+            title: 'How to solve exponential equations in Desmos',
+            steps: [
+              'Type: <code>y = 500 · 1.03^x</code>',
+              'Type: <code>y = 2000</code> (a horizontal line)',
+              'Click the <strong>intersection point</strong> of the two curves',
+              'The x-value is approximately 46.9, so the answer is 47 days',
+              'Desmos solves this graphically — no logarithms needed!'
             ]
           }
         }
