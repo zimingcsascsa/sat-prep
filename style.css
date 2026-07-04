@@ -634,6 +634,145 @@ canvas { width: 100% !important; }
 /* ===== FOCUS ===== */
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
+/* ===== DESMOS PANEL ===== */
+.desmos-toggle-btn {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 90;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 28px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  transition: all var(--transition);
+  font-family: inherit;
+}
+.desmos-toggle-btn:hover { background: var(--accent-hover); transform: translateY(-2px); }
+.desmos-toggle-btn.open { background: var(--red); }
+.desmos-toggle-btn.open:hover { background: #dc2626; }
+
+.desmos-panel {
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 420px;
+  z-index: 150;
+  background: var(--bg-card);
+  border-left: 1px solid var(--border);
+  box-shadow: -4px 0 20px rgba(0,0,0,.15);
+  display: flex;
+  flex-direction: column;
+  animation: slideIn .25s ease;
+}
+@keyframes slideIn { from { transform: translateX(100%); } to { transform: none; } }
+.desmos-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 700;
+  font-size: 14px;
+  background: var(--bg-hover);
+}
+
+@media (max-width: 768px) {
+  .desmos-panel { width: 100%; }
+  .desmos-toggle-btn { right: 12px; bottom: 12px; }
+}
+
+/* ===== DESMOS CHEAT GRID ===== */
+.desmos-cheat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.desmos-cheat-item {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  text-align: center;
+}
+.desmos-cheat-title {
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+.desmos-cheat-item code {
+  display: block;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 8px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+.desmos-cheat-item p {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0;
+}
+@media (max-width: 480px) {
+  .desmos-cheat-grid { grid-template-columns: 1fr; }
+}
+
+/* ===== REGRESSION TUTORIAL FEEDBACK ===== */
+.regression-tutorial {
+  background: var(--accent-light);
+  border: 2px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-top: 16px;
+}
+.regression-tutorial h4 {
+  color: var(--accent);
+  margin-bottom: 12px;
+  font-size: 15px;
+}
+.regression-tutorial .tutorial-step {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 10px;
+  align-items: flex-start;
+}
+.regression-tutorial .step-num {
+  background: var(--accent);
+  color: #fff;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.regression-tutorial .step-text {
+  font-size: 14px;
+  line-height: 1.5;
+}
+.regression-tutorial code {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+
 /* ===== PRINT ===== */
 @media print {
   .sidebar, .mobile-header, .test-topbar, .test-progress-bar, .test-nav, .question-map-wrap { display: none !important; }

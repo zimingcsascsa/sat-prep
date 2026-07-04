@@ -14,7 +14,11 @@ const App = (() => {
     timer: null,
     timeLeft: 0,
     darkMode: false,
-    savedTest: null  // {testId, currentModule, currentQuestionIdx, answers, marked, timeLeft, timestamp}
+    savedTest: null,  // {testId, currentModule, currentQuestionIdx, answers, marked, timeLeft, timestamp}
+    desmosCalc: null,
+    desmosPracticeCalc: null,
+    desmosOpen: false,
+    isRegressionTest: false
   };
 
   // Module config
@@ -87,7 +91,7 @@ const App = (() => {
 
     // Check URL hash for deep link
     const hash = window.location.hash.slice(1);
-    if (hash && ['dashboard', 'tests', 'results', 'analytics', 'recommendations'].includes(hash)) {
+    if (hash && ['dashboard', 'tests', 'results', 'analytics', 'recommendations', 'regression'].includes(hash)) {
       navigate(hash);
     }
   }
@@ -159,6 +163,7 @@ const App = (() => {
     if (page === 'analytics') renderAnalytics();
     if (page === 'recommendations') renderRecommendations();
     if (page === 'results') renderResults();
+    if (page === 'regression') renderRegressionPage();
   }
 
   // ===== THEME =====
@@ -179,6 +184,15 @@ const App = (() => {
     // Nav links
     document.querySelectorAll('.nav-links a').forEach(a => {
       a.addEventListener('click', e => { e.preventDefault(); navigate(a.dataset.page); });
+    });
+
+    // Desmos toggle
+    document.getElementById('btn-toggle-desmos')?.addEventListener('click', toggleDesmos);
+    document.getElementById('btn-close-desmos')?.addEventListener('click', () => {
+      document.getElementById('desmos-panel').style.display = 'none';
+      state.desmosOpen = false;
+      const btn = document.getElementById('btn-toggle-desmos');
+      if (btn) { btn.textContent = '📊 Calculator'; btn.classList.remove('open'); }
     });
 
     // Theme toggle
@@ -220,6 +234,11 @@ const App = (() => {
     // Review filters
     ['review-section-filter', 'review-result-filter', 'review-difficulty-filter'].forEach(id => {
       document.getElementById(id)?.addEventListener('change', renderReviewList);
+    });
+
+    // Desmos panel resize on window resize
+    window.addEventListener('resize', () => {
+      if (state.desmosCalc && state.desmosOpen) state.desmosCalc.resize();
     });
   }
 
@@ -321,10 +340,16 @@ const App = (() => {
     if (!test) return;
 
     state.currentTest = test;
+    state.isRegressionTest = testId.startsWith('reg_');
     state.currentModule = MODULE_ORDER[0];
     state.currentQuestionIdx = 0;
     state.answers = {};
     state.marked = new Set();
+
+    // For regression tests, skip to math1 directly
+    if (state.isRegressionTest) {
+      state.currentModule = 'math1';
+    }
 
     showTestInterface();
   }
@@ -334,7 +359,13 @@ const App = (() => {
     document.getElementById('page-test').classList.add('active');
     document.getElementById('module-transition').style.display = 'none';
 
+    // Show Desmos toggle for math modules
+    const desmosBtn = document.getElementById('btn-toggle-desmos');
     const config = MODULE_CONFIG[state.currentModule];
+    if (desmosBtn) {
+      desmosBtn.style.display = (config.section === 'math') ? 'block' : 'none';
+    }
+
     document.getElementById('test-module-label').textContent = config.label;
 
     state.timeLeft = config.time;
@@ -426,6 +457,23 @@ const App = (() => {
     }
 
     container.innerHTML = html;
+
+    // Add feedback area and check button for regression questions
+    const navExtra = document.getElementById('test-nav-extra');
+    const existingBtn = navExtra?.querySelector('.btn-check-reg');
+    if (q.desmosTutorial) {
+      container.innerHTML += `<div id="regression-feedback" class="regression-tutorial" style="display:none"></div>`;
+      if (navExtra && !existingBtn) {
+        const checkBtn = document.createElement('button');
+        checkBtn.className = 'btn btn-success btn-check-reg';
+        checkBtn.textContent = '✓ Check Answer';
+        checkBtn.onclick = checkRegressionAnswer;
+        navExtra.appendChild(checkBtn);
+      }
+    } else if (existingBtn) {
+      existingBtn.remove();
+    }
+
     renderQuestionMap();
   }
 
@@ -439,6 +487,49 @@ const App = (() => {
   function saveGridin(qId, value) {
     state.answers[qId] = value.trim();
     renderQuestionMap();
+
+    // Auto-check regression questions on change
+    if (state.isRegressionTest) {
+      checkRegressionAnswer();
+    }
+  }
+
+  function checkRegressionAnswer() {
+    const questions = getModuleQuestions();
+    const q = questions[state.currentQuestionIdx];
+    if (!q || !q.desmosTutorial) return;
+
+    const userAns = state.answers[q.id];
+    if (!userAns || userAns === '') return;
+
+    const isCorrect = checkAnswer(q, userAns);
+    const feedback = document.getElementById('regression-feedback');
+    if (!feedback) return;
+
+    if (isCorrect) {
+      feedback.style.display = 'block';
+      feedback.innerHTML = `
+        <h4 style="color:var(--green)">✅ Correct!</h4>
+        <p style="color:var(--text-secondary)">${q.explanation}</p>
+      `;
+    } else {
+      const tut = q.desmosTutorial;
+      feedback.style.display = 'block';
+      feedback.innerHTML = `
+        <h4>❌ Not quite — here's how to do it in Desmos:</h4>
+        <p style="font-weight:600;margin-bottom:12px">${tut.title}</p>
+        ${tut.steps.map((s, i) => `
+          <div class="tutorial-step">
+            <div class="step-num">${i + 1}</div>
+            <div class="step-text">${s}</div>
+          </div>
+        `).join('')}
+        <div style="margin-top:12px;padding:10px;background:var(--bg-card);border-radius:var(--radius-sm);border:1px solid var(--border)">
+          <strong>Correct answer:</strong> ${q.answer}<br>
+          <span style="color:var(--text-secondary)">${q.explanation}</span>
+        </div>
+      `;
+    }
   }
 
   function nextQuestion() {
@@ -449,11 +540,16 @@ const App = (() => {
     } else {
       // End of module
       clearInterval(state.timer);
-      const moduleIdx = MODULE_ORDER.indexOf(state.currentModule);
-      if (moduleIdx < MODULE_ORDER.length - 1) {
-        showModuleTransition(moduleIdx + 1);
+      if (state.isRegressionTest) {
+        // Regression tests: just submit directly
+        submitTest();
       } else {
-        showSubmitModal();
+        const moduleIdx = MODULE_ORDER.indexOf(state.currentModule);
+        if (moduleIdx < MODULE_ORDER.length - 1) {
+          showModuleTransition(moduleIdx + 1);
+        } else {
+          showSubmitModal();
+        }
       }
     }
   }
@@ -571,7 +667,8 @@ const App = (() => {
   function getAllTests() {
     const base = window.SAT_TESTS || [];
     const extra = window.SAT_TESTS_EXTRA || [];
-    return [...base, ...extra];
+    const regression = window.REGRESSION_TESTS || [];
+    return [...base, ...extra, ...regression];
   }
 
   function getAllQuestions() {
@@ -801,6 +898,18 @@ const App = (() => {
             </div>
             <div class="review-correct-answer">Correct answer: ${q.answer}</div>
             <div class="review-explanation">${q.explanation}</div>
+            ${q.desmosTutorial && !isCorrect && !isSkipped ? `
+              <div class="regression-tutorial" style="margin-top:12px">
+                <h4>📐 How to do this in Desmos:</h4>
+                <p style="font-weight:600;margin-bottom:8px">${q.desmosTutorial.title}</p>
+                ${q.desmosTutorial.steps.map((s, i) => `
+                  <div class="tutorial-step">
+                    <div class="step-num">${i + 1}</div>
+                    <div class="step-text">${s}</div>
+                  </div>
+                `).join('')}
+              </div>
+            ` : ''}
           </div>
         </div>
       `;
@@ -1056,6 +1165,83 @@ const App = (() => {
     container.innerHTML = html;
   }
 
+  // ===== DESMOS =====
+  function initDesmos() {
+    if (state.desmosCalc || typeof Desmos === 'undefined') return;
+    try {
+      const el = document.getElementById('desmos-calculator');
+      if (el) {
+        state.desmosCalc = Desmos.calculator(el, { keypad: true, expressions: true, settingsMenu: true });
+      }
+    } catch (e) { console.warn('Desmos init failed:', e); }
+  }
+
+  function initDesmosPractice() {
+    if (state.desmosPracticeCalc || typeof Desmos === 'undefined') return;
+    try {
+      const el = document.getElementById('desmos-practice-calc');
+      if (el) {
+        state.desmosPracticeCalc = Desmos.calculator(el, { keypad: true, expressions: true, settingsMenu: true });
+      }
+    } catch (e) { console.warn('Desmos practice init failed:', e); }
+  }
+
+  function toggleDesmos() {
+    const panel = document.getElementById('desmos-panel');
+    const btn = document.getElementById('btn-toggle-desmos');
+    if (!panel) return;
+
+    if (state.desmosOpen) {
+      panel.style.display = 'none';
+      state.desmosOpen = false;
+      btn.textContent = '📊 Calculator';
+      btn.classList.remove('open');
+    } else {
+      panel.style.display = 'flex';
+      state.desmosOpen = true;
+      btn.textContent = '✕ Close';
+      btn.classList.add('open');
+      initDesmos();
+      if (state.desmosCalc) state.desmosCalc.resize();
+    }
+  }
+
+  // ===== REGRESSION PAGE =====
+  function renderRegressionPage() {
+    const tests = window.REGRESSION_TESTS || [];
+    const container = document.getElementById('regression-test-list');
+    if (!container) return;
+
+    initDesmosPractice();
+    if (state.desmosPracticeCalc) state.desmosPracticeCalc.resize();
+
+    container.innerHTML = tests.map(test => {
+      const history = state.testHistory.filter(h => h.testId === test.id);
+      const lastAttempt = history.length > 0 ? history[history.length - 1] : null;
+      const totalQ = test.modules.rw1.length + test.modules.rw2.length + test.modules.math1.length + test.modules.math2.length;
+
+      return `\n        <div class="test-card" onclick="App.startTest('${test.id}')">
+          <div class="test-card-header">
+            <div class="test-card-title">${test.name}</div>
+            <span class="test-card-badge">${test.badge || 'New'}</span>
+          </div>
+          <div class="test-card-desc">${test.description}</div>
+          <div class="test-card-meta">
+            <span>📝 ${totalQ} questions</span>
+            <span>⏱ ~15 min</span>
+            <span>💡 Desmos help included</span>
+          </div>
+          ${lastAttempt ? `
+            <div class="test-card-scores">
+              <span class="test-score-mini math">Score: ${lastAttempt.mathCorrect}/${lastAttempt.mathTotal}</span>
+            </div>
+          ` : ''}
+          <button class="btn btn-primary btn-sm">${lastAttempt ? 'Retake' : 'Start Practice'}</button>
+        </div>
+      `;
+    }).join('');
+  }
+
   // ===== PUBLIC API =====
   return {
     init,
@@ -1064,7 +1250,8 @@ const App = (() => {
     selectChoice,
     saveGridin,
     jumpToQuestion,
-    viewResults
+    viewResults,
+    checkRegressionAnswer
   };
 })();
 
